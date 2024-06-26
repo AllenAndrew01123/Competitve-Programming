@@ -1,0 +1,24 @@
+ray = input("Enter a string: ")
+ben = ""
+kevin = ""
+
+while len(ray) != 0:
+    
+    move1 = ray[0]
+    ray = ray[1:]
+    ben = ben + move1
+    
+    if len(ben)>=2:
+        if ben[-1] < ben [-2]:
+            move2 = ben[-1]
+            ben  = ben [:-1]
+            kevin = kevin+move2
+        else: pass
+    else: pass
+    
+while len(ben) != 0 :
+    move3 = ben[-1]
+    ben = ben[:-1]
+    kevin = kevin + move3
+
+print("The final result is ",kevin)
