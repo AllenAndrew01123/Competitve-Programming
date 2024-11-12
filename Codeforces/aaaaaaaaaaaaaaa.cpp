@@ -1,31 +1,33 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
-
-int cnt(int l,int r){
-    cout<<"? "<<l<<' '<<r<<'\n';
-    int s;
-    cin>>s;
-    return r-l+1-s;
+#define mod 1000000007
+typedef long long ll;
+bool check(ll num)
+{
+    while(num%2==0)
+    num/=2;
+    while(num%3==0)
+    num/=3;
+    while(num%5==0)
+    num/=5;
+    if(num==1)
+    return true;
+    else
+    return false;
 }
-int main() {
-    int n,t,k;
-    cin>>n>>t>>k;
-    int l=1,r=n,m,ans=-1;
-    while(l<=r){
-        m=l+(r-l)/2;
-        
-        if(l==r){
-            cout<<"! "<<m<<'\n';
-            break;
-        }
-        int q=cnt(l,m);
-        if(q>=k){
-            r=m;
-        }
-        else{
-            l=m+1;
-            k-=q;
-        }
+int main()
+{
+    cin.tie(0)->sync_with_stdio(0);
+    ll n;
+    cin >> n;
+    ll arr[n];
+    for (int i = 0; i < n; i++)
+        cin >> arr[i];
+    ll sum=0;
+    for (int i = 0; i < n; i++)
+    {
+        if(check(arr[i]))
+        sum+=arr[i];
     }
-    return 0;
-} 
+    cout<<sum<<endl;
+}

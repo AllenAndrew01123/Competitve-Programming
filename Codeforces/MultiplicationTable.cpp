@@ -1,17 +1,27 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
-main()
+#define mod 1000000007
+typedef long long ll;
+int main()
 {
     cin.tie(0)->sync_with_stdio(0);
-    long long n,x;cin>>n>>x;
-    long long i=1,c=0;
-    for(;i<=n;i++)
+    ll n, m, k;
+    cin >> n >> m >> k;
+    ll l = 1, r = 1e12;
+    ll ans;
+    while (l <= r)
     {
-        if(x%i==0 && x/i<=n)
+        ll mid = r - (r - l) / 2;
+        ll cnt = 0;
+        for (ll i = 1; i <= n; i++)
+            cnt += min(mid / i, m);
+        if(cnt>=k)
         {
-            c++;
-            // cout<<i<<endl;
+            ans=mid;
+            r=mid-1;
         }
+        else
+        l=mid+1;
     }
-    cout<<c;
+    cout<<ans<<endl;
 }

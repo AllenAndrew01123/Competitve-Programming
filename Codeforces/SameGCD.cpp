@@ -1,37 +1,34 @@
 #include<bits/stdc++.h>
 using namespace std;
-bool checkprime(long long m)
-{
-    long long i=2;
-    while(i*i<=m)
-    {
-        if(m%i==0)
-        return false;
-        i++;
+#define mod 1000000007
+typedef long long ll;
+ll phi(ll n) {
+    ll result = n;
+    for (ll i = 2; i * i <= n; i++) {
+        if (n % i == 0) {
+            while (n % i == 0)
+                n /= i;
+            result -= result / i;
+        }
     }
-    return true;
+    if (n > 1)
+        result -= result / n;
+    return result;
 }
-main()
+void solve()
+{
+    ll a,m;cin>>a>>m;
+    ll g=__gcd(a,m);
+    ll a_=a/g;
+    ll m_=m/g;
+    cout<<phi(m_)<<endl;
+}
+int main()
 {
     cin.tie(0)->sync_with_stdio(0);
     int t;cin>>t;
     while(t--)
     {
-        long long a,m;cin>>a>>m;
-        long long g=__gcd(a,m);
-        if(g==a)
-        {
-            cout<<1<<endl;
-            continue;
-        }
-        else if(g==1 && checkprime(m))
-        {
-           cout<<m-1<<endl;
-        }
-        else
-        {
-            long long diff=m-a;
-            cout<<(diff+g)/g<<endl;
-        }
+        solve();
     }
 }
