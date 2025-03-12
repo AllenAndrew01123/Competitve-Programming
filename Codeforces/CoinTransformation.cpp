@@ -4,13 +4,12 @@ using namespace std;
 typedef long long ll;
 void solve()
 {
-    string s;cin>>s;
-    ll ans=LLONG_MAX;
-    for(int i=0;i<s.length();i++)
+    ll n;cin>>n;
+    ll ans=1;
+    while(n>3)
     {
-        string snew=s.substr(0,i)+s.substr(i+1,s.length()-i-1);
-        ll num=stoi(snew);
-        ans=min(ans,num);
+        n/=4;
+        ans*=2;
     }
     cout<<ans<<endl;
 }
