@@ -1,43 +1,33 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define mod 1000000007
 typedef long long ll;
 void solve()
 {
-    ll n, k;
-    cin >> n >> k;
-    ll arr1[n], arr2[n];
-    for (int i = 0; i < n; i++)
-        cin >> arr1[i];
-    for (int i = 0; i < n; i++)
-        cin >> arr2[i];
-    ll minsum=0;
-    ll minodd=9;
-    for(int i=0;i<n;i++)
+    ll n,d,k;
+    cin>>n>>d>>k;
+    ll l=1,r=1e18;
+    ll ans=r;
+    while(l<=r)
     {
-        minsum+=min(abs(arr1[i]-arr2[i]),9-abs(arr1[i]-arr2[i]));
-        minodd=min(minodd,abs(abs(arr1[i]-arr2[i])-(9-abs(arr1[i]-arr2[i]))));
-    }
-    if(minsum>k)
-    {
-        cout<<"No\n";
-    }
-    else
-    {
-        if((k-minsum)%2==0)
-        cout<<"Yes\n";
-        else
+        ll mid=r-(r-l)/2;
+        ll m=0;
+        ll sum=0;
+        for(int i=1;i<=d;i++)
         {
-            if(minodd<=(k-minsum))
-            cout<<"Yes\n";
-            else
-            cout<<"No\n";
+            sum+=max((n-m)/mid,k);
+            m+=max((n-m)/mid,k);
         }
+        if(sum>=n)
+        {
+            ans=mid;
+            l=mid+1;
+        }
+        else
+        r=mid-1;
     }
-
+    cout<<ans<<endl;
 
 }
-
 int main() {
     cin.tie(0) -> sync_with_stdio(0);
     int t;
