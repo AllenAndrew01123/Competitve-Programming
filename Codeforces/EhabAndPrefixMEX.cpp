@@ -6,13 +6,30 @@ void solve()
 {
     ll n;
     cin >> n;
-    vector<ll> v(n);
-    map<ll, ll> mp;
+    vector<ll> a(n), b(n, -1);
+    set<ll> s;
+    for (int i = 0; i <= n; i++)
+        s.insert(i);
     for (int i = 0; i < n; i++)
     {
-        cin >> v[i];
-        mp[v[i]]++;
+        cin >> a[i];
+        s.erase(a[i]);
     }
+    for (int i = 1; i < n; i++)
+    {
+        if (a[i] != a[i - 1])
+            b[i] = a[i - 1];
+    }
+    for (int i = 0; i < n; i++)
+    {
+        if (b[i] == -1)
+        {
+            b[i] = *s.begin();
+            s.erase(s.begin());
+        }
+    }
+    for (auto x : b)
+        cout << x << " ";
 }
 int main()
 {

@@ -1,50 +1,64 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
+typedef long long ll;
 
-int main() {
-    // freopen("input.txt", "r", stdin);
-    // freopen("output.txt", "w", stdout);
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-    int tt;
-    cin >> tt;
-    while (tt--) {
-        int n, m;
-        cin >> n >> m;
-        int a[n][m];
-        for(int i = 0; i < n; ++i) {
-            for(int j = 0; j < m; ++j) {
-                cin >> a[i][j];
-            }   
+void solve() {
+    int n, m;
+    cin >> n >> m;
+    vector<vector<ll>> arr(n, vector<ll>(m));
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < m; j++)
+            cin >> arr[i][j];
+    ll G = __gcd(arr[0][0], arr[n-1][m-1]);
+    vector<ll> divs;
+    for (ll i = 1; i * i <= G; i++) {
+        if (G % i == 0) {
+            divs.push_back(i);
+            if (i * i != G) divs.push_back(G / i);
         }
-        if(__gcd(a[0][0],a[n-1][m-1])==1)
-        {
-            cout<<1<<endl;
-            continue;
+    }
+    sort(divs.rbegin(), divs.rend());
+    vector<vector<char>> check(n, vector<char>(m));
+    vector<vector<char>> dp(n,    vector<char>(m));
+
+    ll ans = 0;
+    for (ll d : divs) {
+        for (int i = 0; i < n; i++) {
+            memset(check[i].data(), 0, m * sizeof(char));
+            memset(   dp[i].data(), 0, m * sizeof(char));
         }
-        int dp[n][m];
-        // int upperbound1=max(__gcd(a[0][0],a[0][1]),__gcd(a[0][0],a[1][0]));
-        dp[0][0] = a[0][0];
-        int upperbound=max(__gcd(a[n-2][m-1],a[n-1][m-1]),__gcd(a[n-1][m-2],a[n-1][m-1]));
-        // cout<<upperbound<<endl;
-        for(int i = 1; i < n; ++i) {
-            dp[i][0] = __gcd(dp[i - 1][0], a[i][0]);
-        }
-        for(int j = 1; j < m; ++j) {
-            dp[0][j] = __gcd(dp[0][j - 1], a[0][j]);
-        }
-        for(int i = 1; i < n; ++i) {
-            for(int j = 1; j < m; ++j) {
-                dp[i][j] = max(__gcd(upperbound, __gcd(dp[i-1][j], a[i][j])),__gcd(upperbound, __gcd(dp[i][j - 1], a[i][j])));
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < m; j++)
+                if (arr[i][j] % d == 0)
+                    check[i][j] = 1;
+
+        dp[0][0] = check[0][0];
+        for (int i = 1; i < n; i++)
+            dp[i][0] = dp[i-1][0] && check[i][0];
+        for (int j = 1; j < m; j++)
+            dp[0][j] = dp[0][j-1] && check[0][j];
+
+        for (int i = 1; i < n; i++) {
+            for (int j = 1; j < m; j++) {
+                if (check[i][j])
+                    dp[i][j] = dp[i-1][j] || dp[i][j-1];
             }
         }
-        // for(int i = 0; i < n; ++i) {
-        //     for(int j = 0; j < m; ++j) {
-        //         cout<< dp[i][j]<<" ";
-        //     }  
-        //     cout<<endl; 
-        // }
-        cout << dp[n - 1][m - 1] << '\n';
+        if (dp[n-1][m-1]) {
+            ans = d;
+            break;
+        }
     }
+    cout << ans << "\n";
+}
+
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int t; 
+    cin >> t;
+    while (t--) 
+        solve();
     return 0;
 }
