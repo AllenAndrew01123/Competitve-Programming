@@ -1,45 +1,62 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define mod 1000000007
 typedef long long ll;
-int totalCost(int mask, int curr, int n, 
-              vector<vector<int>> &cost, vector<vector<int>> &memo) {
-    if (mask == (1 << n) - 1) {
-        return cost[curr][0];
-    }
-
-    if (memo[curr][mask] != -1)
-        return memo[curr][mask];
-
-    int ans = INT_MAX;
-    for (int i = 0; i < n; i++) {
-        if ((mask & (1 << i)) == 0) {
-            ans = min(ans, cost[curr][i] + 
-                      totalCost((mask | (1 << i)), i, n, cost, memo));
-        }
-    }
-
-    return memo[curr][mask] = ans;
+ll binpow(ll a, ll b, ll mod)
+{
+    if (a == 1 || b == 0)
+        return 1;
+    ll x = binpow(a, b / 2, mod);
+    if (b & 1)
+        return ((((x % mod) * (x % mod)) % mod) * (a % mod)) % mod;
+    else
+        return (((x % mod) * (x % mod)) % mod) % mod;
 }
- 
-int tsp(vector<vector<int>> &cost) {
-    int n = cost.size();
-    vector<vector<int>> memo(n, vector<int>(1 << n, -1));
-    return totalCost(1, 0, n, cost,
-                     memo);  
-}
-
-int main() {
-    int n;cin>>n;
-    vector<vector<int>> v(n,vector<int>(n));
-    for(int i=0;i<n;i++)
+int main()
+{
+    cin.tie(0)->sync_with_stdio(0);
+    int t;
+    cin >> t;
+    while (t--)
     {
-        for(int j=0;j<n;j++)
+        char ch, op1, op2;
+        ll a, b, c, p;
+        string tmp;
+        cin >> ch                  // '('
+            >> a >> op1            // '+' or '-' or '*' or '/'
+            >> b >> op2 >> c >> ch // ')'
+            >> tmp                 // "mod"
+            >> p;
+
+        // helper that applies an operator mod p
+        auto apply = [&](ll x, char op, ll y)
         {
-            cin>>v[i][j];
+            if (op == '+')
+                return (x + y) % p;
+            if (op == '-')
+                return (x - y + p) % p;
+            if (op == '*')
+                return (x * y) % p;
+            // op == '/'
+            return (x * binpow(y, p - 2, p)) % p;
+        };
+
+        // decide precedence
+        bool secondTighter = (op2 == '*' || op2 == '/') && (op1 == '+' || op1 == '-');
+
+        ll mid, result;
+        if (secondTighter)
+        {
+            // do b op2 c first
+            mid = apply(b, op2, c);
+            result = apply(a, op1, mid);
         }
+        else
+        {
+            // do a op1 b first
+            mid = apply(a, op1, b);
+            result = apply(mid, op2, c);
+        }
+
+        cout << (result+p)%p << "\n";
     }
-    int res = tsp(v);
-    cout << res << endl;
-    return 0;
 }

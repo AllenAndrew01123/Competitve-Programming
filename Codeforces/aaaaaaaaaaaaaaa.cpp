@@ -1,15 +1,20 @@
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
+void solve()
+{
+    ll n, k;
+    cin >> n >> k;
+    vector<vector<ll>> dp(n + 1, vector<ll>(k + 1, 0));
+    for (int i = 1; i <= n; i++)
+        dp[i][1] = 1;
+}
 int main()
 {
     cin.tie(0)->sync_with_stdio(0);
-    int t;
-    cin >> t;
+    int t = 1;
     while (t--)
     {
-        ll a11, a12, a13, a21, a22, a23, a31, a32, a33;
-        cin >> a11 >> a12 >> a13 >> a21 >> a22 >> a23 >> a31 >> a32 >> a33;
-        cout << a11 * (a22 * a33 - a23 * a32) - a12 * (a21 * a33 - a23 * a31) + a13 * (a21 * a32 - a22 * a31)<<endl;
+        solve();
     }
 }
