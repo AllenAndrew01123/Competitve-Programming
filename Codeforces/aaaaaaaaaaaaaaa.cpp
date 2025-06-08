@@ -3,11 +3,36 @@ using namespace std;
 typedef long long ll;
 void solve()
 {
-    ll n, k;
-    cin >> n >> k;
-    vector<vector<ll>> dp(n + 1, vector<ll>(k + 1, 0));
-    for (int i = 1; i <= n; i++)
-        dp[i][1] = 1;
+    map<ll,vector<ll>>mp;
+    ll q;
+    cin >> q;
+    while (q--)
+    {
+        string s;
+        cin >> s;
+        if (s == "ADD")
+        {
+            ll x;cin>>x;
+            for(int i=1;i*i<=x;i++)
+            {
+                if(x%i==0)
+                {
+                    if(i*i==x)
+                    mp[i].push_back(x);
+                    else
+                    {
+                        mp[i].push_back(x);
+                        mp[x/i].push_back(x);
+                    }
+                }
+            }
+        }
+        else
+        {
+            ll a,b,m;cin>>a>>b>>m;
+            cout<<upper_bound(mp[m].begin(),mp[m].end(),b)-lower_bound(mp[m].begin(),mp[m].end(),a)<<endl;
+        }
+    }
 }
 int main()
 {

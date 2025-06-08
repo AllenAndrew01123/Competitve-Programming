@@ -1,8 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long ll;
-#define N 2000
 #define mod 1000000007
+typedef long long ll;
+#define N 200000
 ll fact[N + 1], inv[N + 1];
 ll binpow(ll a, ll b)
 {
@@ -26,24 +26,25 @@ void calc()
 }
 ll nCr(ll n, ll r)
 {
+    if (r > n)
+        return 0;
     if (n == 0 || n == r || r == 0)
         return 1;
     return ((((fact[n] % mod) % mod * (inv[r] % mod) % mod) % mod) * inv[n - r] % mod) % mod;
-}
-void solve()
-{
-    ll n, m;
-    cin >> n >> m;
-    cout << nCr(n + m - 1, n) << endl;
 }
 int main()
 {
     cin.tie(0)->sync_with_stdio(0);
     calc();
-    int t;
-    cin >> t;
-    while (t--)
+    ll h, w, a, b;
+    cin >> h >> w >> a >> b;
+    ll total = nCr(h + w - 2, h - 1);
+    ll comp = 0;
+    for (int i = 1; i <= b; i++)
     {
-        solve();
+        ll x=nCr(h-a-1+i-1,h-a-1);
+        ll y=nCr(a-1+(w-i),a-1);
+        comp = ((comp % mod + (y% mod)*(x%mod))%mod) % mod;
     }
+    cout << (total % mod - comp % mod + mod) % mod << endl;
 }
