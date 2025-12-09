@@ -1,45 +1,30 @@
 #include <bits/stdc++.h>
 using namespace std;
+#define mod 1000000007
 typedef long long ll;
-void solve()
+double sqrtBinarySearch(double n)
 {
-    map<ll,vector<ll>>mp;
-    ll q;
-    cin >> q;
-    while (q--)
+    double low = 0, high = n, mid;
+    double eps = 1e-11;
+
+    while (high - low > eps)
     {
-        string s;
-        cin >> s;
-        if (s == "ADD")
+        mid = (low + high) / 2.0;
+        if (mid * mid > n)
         {
-            ll x;cin>>x;
-            for(int i=1;i*i<=x;i++)
-            {
-                if(x%i==0)
-                {
-                    if(i*i==x)
-                    mp[i].push_back(x);
-                    else
-                    {
-                        mp[i].push_back(x);
-                        mp[x/i].push_back(x);
-                    }
-                }
-            }
+            high = mid;
         }
         else
         {
-            ll a,b,m;cin>>a>>b>>m;
-            cout<<upper_bound(mp[m].begin(),mp[m].end(),b)-lower_bound(mp[m].begin(),mp[m].end(),a)<<endl;
+            low = mid;
         }
     }
+    return (low + high) / 2.0;
 }
 int main()
 {
-    cin.tie(0)->sync_with_stdio(0);
-    int t = 1;
-    while (t--)
-    {
-        solve();
-    }
+    // precision till 10th decimal place
+    //  Alternatively, the same result can be obtained directly with using in-built func:
+    // cout << fixed << setprecision(10) << sqrt(42) << endl;
+    cout << fixed << setprecision(10) << sqrtBinarySearch(42.0) << endl;
 }
