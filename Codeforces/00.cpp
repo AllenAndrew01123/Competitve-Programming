@@ -1,46 +1,53 @@
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
-
-ll best12(const string &s) {
-    const int k = 12;              // length of number we want
-    int n = (int)s.size();
-    string st;
-    st.reserve(k);
-
-    for (int i = 0; i < n; i++) {
-        char d = s[i];
-
-        // While last chosen digit is smaller than current, and
-        // we can still end up with k digits total, pop it.
-        while (!st.empty() && st.back() < d &&
-               (int)st.size() - 1 + (n - i) >= k) {
-            st.pop_back();
-        }
-
-        // If we still don't have k digits, take this one
-        if ((int)st.size() < k) {
-            st.push_back(d);
-        }
-    }
-
-    // Assuming the problem guarantees at least 12 digits in each line.
-    // If not, you might want to handle st.size() < k differently.
-    return stoll(st);
+#define mod 1000000007
+ll check(ll x, ll y, vector<string> &v)
+{
+    if (x < 0 || x > 137)
+        return 0;
+    if (y < 0 || y > 137)
+        return 0;
+    return v[x][y] == '@';
 }
-
 void solve()
 {
+    vector<string> v(138);
     string s;
-    ll ans = 0;
-
+    int idx = 0;
     while (cin >> s)
     {
-        ll mx = best12(s);
-        ans += mx;
+        v[idx] = s;
+        idx++;
     }
-
-    cout << ans << '\n';
+    ll prevcnt = -1;
+    ll currcnt = 0;
+    ll sz = v[0].length();
+    while (prevcnt != currcnt)
+    {
+        vector<pair<ll, ll>> p;
+        prevcnt = currcnt;
+        for (int i = 0; i < sz; i++)
+        {
+            for (int j = 0; j < sz; j++)
+            {
+                if (v[i][j] == '@')
+                {
+                    if (check(i - 1, j - 1, v) + check(i - 1, j, v) + check(i - 1, j + 1, v) + check(i, j - 1, v) + check(i, j + 1, v) + check(i + 1, j - 1, v) + check(i + 1, j, v) + check(i + 1, j + 1, v) < 4)
+                    {
+                        p.push_back({i, j});
+                        // cout<<currcnt<<endl;
+                        currcnt++;
+                    }
+                }
+            }
+        }
+        // cout << currcnt << endl;
+        for (auto x : p)
+            v[x.first][x.second] = '.';
+        p.clear();
+    }
+    cout << currcnt << endl;
 }
 
 int main()
