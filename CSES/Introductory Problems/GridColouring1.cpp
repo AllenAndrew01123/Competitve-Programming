@@ -18,41 +18,36 @@
 using namespace std;
 typedef long long ll;
 #define mod 1000000007
-ll mexcalc(vector<vector<ll>>&v,int row,int col)
+void fill(set<char> &s)
 {
-    set<ll>s;
-    for(int i=0;i<col;i++)
-    s.insert(v[row][i]);
-    for(int i=0;i<row;i++)
-    s.insert(v[i][col]);
-    ll mex=0;
-    for(auto x:s)
-    {
-        if(mex==x)
-        mex++;
-    }
-    return mex;
+    s.insert('A');
+    s.insert('B');
+    s.insert('C');
+    s.insert('D');
 }
 void solve()
 {
-    ll n;
-    cin >> n;
-    vector<vector<ll>> v(n, vector<ll>(n));
-    v[0][0]=0;
-    for(int i=0;i<n;i++)
-    {
-        for(int j=0;j<n;j++)
-        {
-            v[i][j]=mexcalc(v,i,j);
-        }
-    }
+    ll n, m;
+    cin >> n >> m;
+    char arr[n][m];
     for (int i = 0; i < n; i++)
     {
-        for (int j = 0; j < n; j++)
+        for (int j = 0; j < m; j++)
+            cin >> arr[i][j];
+    }
+    char s1[2]={'A','B'};
+    char s2[2]={'C','D'};
+    for (int i=0;i<n;i++)
+    {
+        for(int j=0;j<m;j++)
         {
-            cout << v[i][j] << " ";
+            if(arr[i][j]=='A'||arr[i][j]=='B')
+            arr[i][j]=s2[(i+j)%2];
+            else
+            arr[i][j]=s1[(i+j)%2];
+            cout<<arr[i][j];
         }
-        cout << endl;
+        cout<<endl;
     }
 }
 int main()
@@ -63,8 +58,7 @@ int main()
     // #endif
 
     cin.tie(0)->sync_with_stdio(0);
-    ll t=1;
-    // cin >> t;
+    ll t = 1;
     while (t--)
     {
         solve();

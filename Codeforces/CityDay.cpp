@@ -18,41 +18,38 @@
 using namespace std;
 typedef long long ll;
 #define mod 1000000007
-ll mexcalc(vector<vector<ll>>&v,int row,int col)
+bool before(const vector<ll>&v,ll idx,ll x)
 {
-    set<ll>s;
-    for(int i=0;i<col;i++)
-    s.insert(v[row][i]);
-    for(int i=0;i<row;i++)
-    s.insert(v[i][col]);
-    ll mex=0;
-    for(auto x:s)
+    for(int i=max(0LL,idx-x);i<idx;i++)
     {
-        if(mex==x)
-        mex++;
+        if(v[i]<=v[idx])
+        return false;
     }
-    return mex;
+    return true;
+}
+bool after(const vector<ll>&v,ll idx,ll y)
+{
+    for(int i=idx+1;i<min((ll)v.size(),idx+y+1);i++)
+    {
+        if(v[i]<=v[idx])
+        return false;
+    }
+    return true;
 }
 void solve()
 {
-    ll n;
-    cin >> n;
-    vector<vector<ll>> v(n, vector<ll>(n));
-    v[0][0]=0;
+    ll n, x, y;
+    cin >> n >> x >> y;
+    vector<ll> v(n);
+    for (int i = 0; i < n; i++)
+        cin >> v[i];
     for(int i=0;i<n;i++)
     {
-        for(int j=0;j<n;j++)
+        if(before(v,i,x) && after(v,i,y))
         {
-            v[i][j]=mexcalc(v,i,j);
+            cout<<i+1<<endl;
+            return;
         }
-    }
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < n; j++)
-        {
-            cout << v[i][j] << " ";
-        }
-        cout << endl;
     }
 }
 int main()
@@ -63,8 +60,7 @@ int main()
     // #endif
 
     cin.tie(0)->sync_with_stdio(0);
-    ll t=1;
-    // cin >> t;
+    ll t = 1;
     while (t--)
     {
         solve();

@@ -1,66 +1,59 @@
-#include <bits/stdc++.h>
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
+#include <algorithm>
+#include <bitset>
+#include <climits>
+#include <cmath>
+#include <cstring>
+#include <iomanip>
+#include <iostream>
+#include <map>
+#include <numeric>
+#include <queue>
+#include <random>
+#include <set>
+#include <unordered_set>
+#include <vector>
+#include <stack>
+#include <sstream>
+#include <deque>
 using namespace std;
 typedef long long ll;
 #define mod 1000000007
-using namespace __gnu_pbds;
-template <class T>
-using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
+
 void solve()
 {
-    int n;
+    ll n;
     cin >> n;
-    vector<int> a(n), c(n);
-    ordered_set<int> s;
+    vector<ll>arr(n),cost(n);
+    for (int i = 0; i < n; i++)
+        cin >> arr[i];
+    for (int i = 0; i < n; i++)
+        cin >> cost[i];
+    ll total=accumulate(cost.begin(),cost.end(),0LL);
+    vector<ll> dp(n, 0);
+    //dp[i]= max saved cost if i keep arr[i] unchanged
     for (int i = 0; i < n; i++)
     {
-        cin >> a[i];
-        s.insert(a[i]);
-    }
-    for (int i = 0; i < n; i++)
-        cin >> c[i];
-    int m = s.size();
-    vector<vector<int>> dp(n, vector<int>(m));
-    for (int j = 0; j < m; j++)
-    {
-        int val = *s.find_by_order(j);
-        if (a[0] == val)
-            dp[0][j] = 0;
-        else
-            dp[0][j] = c[0];
-    }
-    for (int i = 1; i < n; i++)
-    {
-        vector<int> pref(m);
-        pref[0] = dp[i - 1][0];
-        for (int j = 1; j < m; j++)
+        dp[i]=cost[i];
+        for(int j=0;j<i;j++)
         {
-            if (dp[i - 1][j] < pref[j - 1])
-                pref[j] = dp[i - 1][j];
-            else
-                pref[j] = pref[j - 1];
-        }
-
-        for (int j = 0; j < m; j++)
-        {
-            int val = *s.find_by_order(j);
-            int cost;
-            if (a[i] == val)
-                cost = 0;
-            else
-                cost = c[i];
-            dp[i][j] = pref[j] + cost;
+            if(arr[j]<=arr[i])
+            dp[i]=max(dp[i],dp[j]+cost[i]);
         }
     }
-    cout << *min_element(dp[n - 1].begin(), dp[n - 1].end()) << endl;
+    cout << total-*max_element(dp.begin(),dp.end()) << endl;
 }
 int main()
 {
-    ios::sync_with_stdio(0);
-    cin.tie(0);
+    // #ifndef ONLINE_JUDGE
+    // freopen("input.txt", "r", stdin);
+    // freopen("output.txt", "w", stdout);
+    // #endif
+
+    cin.tie(0)->sync_with_stdio(0);
     ll t;
     cin >> t;
     while (t--)
+    {
         solve();
+    }
 }

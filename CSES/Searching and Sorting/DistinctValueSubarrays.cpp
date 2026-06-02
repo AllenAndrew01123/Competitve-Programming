@@ -18,42 +18,30 @@
 using namespace std;
 typedef long long ll;
 #define mod 1000000007
-ll mexcalc(vector<vector<ll>>&v,int row,int col)
-{
-    set<ll>s;
-    for(int i=0;i<col;i++)
-    s.insert(v[row][i]);
-    for(int i=0;i<row;i++)
-    s.insert(v[i][col]);
-    ll mex=0;
-    for(auto x:s)
-    {
-        if(mex==x)
-        mex++;
-    }
-    return mex;
-}
+
 void solve()
 {
     ll n;
     cin >> n;
-    vector<vector<ll>> v(n, vector<ll>(n));
-    v[0][0]=0;
-    for(int i=0;i<n;i++)
-    {
-        for(int j=0;j<n;j++)
-        {
-            v[i][j]=mexcalc(v,i,j);
-        }
-    }
+    ll arr[n];
+    map<ll,ll>mp;
     for (int i = 0; i < n; i++)
+        cin >> arr[i];
+    ll ans=0;
+    ll left=0,right=0;
+    while(right<n)
     {
-        for (int j = 0; j < n; j++)
+        mp[arr[right]]++;
+        while(mp.size()!=right-left+1)
         {
-            cout << v[i][j] << " ";
+            if(!--mp[arr[left]])
+            mp.erase(arr[left]);
+            left++;
         }
-        cout << endl;
+        ans+=right-left+1;
+        right++;
     }
+    cout<<ans<<endl;
 }
 int main()
 {
@@ -63,8 +51,7 @@ int main()
     // #endif
 
     cin.tie(0)->sync_with_stdio(0);
-    ll t=1;
-    // cin >> t;
+    ll t = 1;
     while (t--)
     {
         solve();

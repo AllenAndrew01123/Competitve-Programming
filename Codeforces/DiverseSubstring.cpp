@@ -18,45 +18,31 @@
 using namespace std;
 typedef long long ll;
 #define mod 1000000007
-ll mexcalc(vector<vector<ll>>&v,int row,int col)
-{
-    set<ll>s;
-    for(int i=0;i<col;i++)
-    s.insert(v[row][i]);
-    for(int i=0;i<row;i++)
-    s.insert(v[i][col]);
-    ll mex=0;
-    for(auto x:s)
-    {
-        if(mex==x)
-        mex++;
-    }
-    return mex;
-}
+
 void solve()
 {
-    ll n;
-    cin >> n;
-    vector<vector<ll>> v(n, vector<ll>(n));
-    v[0][0]=0;
+    ll n;cin>>n;
+    string s;cin>>s;
     for(int i=0;i<n;i++)
     {
-        for(int j=0;j<n;j++)
+        map<char,ll>mp;
+        mp[s[i]]++;
+        ll mx=mp[s[i]];
+        for(int j=i+1;j<n;j++)
         {
-            v[i][j]=mexcalc(v,i,j);
+            mp[s[j]]++;
+            mx=max(mx,mp[s[j]]);
+            if(mx<=(j-i+1)/2)
+            {
+                cout<<"YES\n";
+                cout<<s.substr(i,j-i+1)<<endl;
+                return;
+            }
         }
     }
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < n; j++)
-        {
-            cout << v[i][j] << " ";
-        }
-        cout << endl;
-    }
+    cout<<"NO\n";
 }
-int main()
-{
+int main() {     
     // #ifndef ONLINE_JUDGE
     // freopen("input.txt", "r", stdin);
     // freopen("output.txt", "w", stdout);
@@ -64,8 +50,7 @@ int main()
 
     cin.tie(0)->sync_with_stdio(0);
     ll t=1;
-    // cin >> t;
-    while (t--)
+    while(t--)
     {
         solve();
     }

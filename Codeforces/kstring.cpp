@@ -18,42 +18,31 @@
 using namespace std;
 typedef long long ll;
 #define mod 1000000007
-ll mexcalc(vector<vector<ll>>&v,int row,int col)
-{
-    set<ll>s;
-    for(int i=0;i<col;i++)
-    s.insert(v[row][i]);
-    for(int i=0;i<row;i++)
-    s.insert(v[i][col]);
-    ll mex=0;
-    for(auto x:s)
-    {
-        if(mex==x)
-        mex++;
-    }
-    return mex;
-}
+
 void solve()
 {
     ll n;
     cin >> n;
-    vector<vector<ll>> v(n, vector<ll>(n));
-    v[0][0]=0;
-    for(int i=0;i<n;i++)
+    string s;
+    cin >> s;
+    map<char, ll> mp;
+    for (auto ch : s)
+        mp[ch]++;
+    string temp="";
+    for(auto x:mp)
     {
-        for(int j=0;j<n;j++)
+        if(x.second%n!=0)
         {
-            v[i][j]=mexcalc(v,i,j);
+            cout<<-1<<endl;
+            return;
         }
+        for(int i=1;i<=x.second/n;i++)
+        temp.push_back(x.first);
     }
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < n; j++)
-        {
-            cout << v[i][j] << " ";
-        }
-        cout << endl;
-    }
+    string ans="";
+    for(int i=1;i<=n;i++)
+    ans+=temp;
+    cout<<ans<<endl;
 }
 int main()
 {
@@ -63,8 +52,7 @@ int main()
     // #endif
 
     cin.tie(0)->sync_with_stdio(0);
-    ll t=1;
-    // cin >> t;
+    ll t = 1;
     while (t--)
     {
         solve();
